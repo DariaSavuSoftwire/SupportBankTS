@@ -9,25 +9,27 @@ import {parse} from "date-fns";
 const accountRepository=new AccountRepository();
 const transactionRepository=new TransactionRepository();
 
-function setUp(){
-
-    const data=fs.readFileSync('data/Transactions2014.csv','utf8')
-    let rows:string[]=data.split("\n");
+function setUp(file_paths: string[]) {
+    for (let path of file_paths)
+    {
+    const data = fs.readFileSync(path, 'utf8')
+    let rows: string[] = data.split("\n");
     rows.shift();
 
-    for(let row of rows){
-        const [date,fromAccount,toAccount,description,amount]=row.split(',');
-        const transactionDate:Date=parse(date ?? "","dd/MM/yyyy",new Date());
+    for (let row of rows) {
+        const [date, fromAccount, toAccount, description, amount] = row.split(',');
+        const transactionDate: Date = parse(date ?? "", "dd/MM/yyyy", new Date());
         accountRepository.addAccount(fromAccount ?? "")
         accountRepository.addAccount(toAccount ?? "")
-        transactionRepository.addTransaction(new Transaction(transactionDate,fromAccount ?? "",toAccount ?? "",description ?? "",Number(amount)))
+        transactionRepository.addTransaction(new Transaction(transactionDate, fromAccount ?? "", toAccount ?? "", description ?? "", Number(amount)))
 
     }
+}
 }
 
 function main()
 {
-    setUp()
+    setUp(['data/Transactions2014.csv','data/DodgyTransactions2015.csv'])
     while (true){
         console.log("The options are:");
         console.log(" 1. List all accounts");

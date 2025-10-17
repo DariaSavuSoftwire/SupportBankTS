@@ -1,7 +1,6 @@
 import fs from 'fs'
 import  readlineSync from 'readline-sync'
 
-import Account from "./model/Account.js";
 import AccountRepository from "./repository/AccountRepository.js";
 import TransactionRepository from "./repository/TransactionRepository.js";
 import Transaction from "./model/Transaction.js";
@@ -21,7 +20,7 @@ function setUp(){
         const transactionDate:Date=parse(date ?? "","dd/MM/yyyy",new Date());
         accountRepository.addAccount(fromAccount ?? "")
         accountRepository.addAccount(toAccount ?? "")
-        transactionRepository.addTransaction(new Transaction(transactionDate,fromAccount,toAccount,description?? "",Number(amount)))
+        transactionRepository.addTransaction(new Transaction(transactionDate,fromAccount ?? "",toAccount ?? "",description ?? "",Number(amount)))
 
     }
 }
@@ -31,16 +30,17 @@ function main()
     setUp()
     while (true){
         console.log("The options are:");
-        console.log(" 1. List all accoun3ts");
+        console.log(" 1. List all accounts");
         console.log(" 2. List all transactions");
         console.log(" 3. Exit");
 
         const userInput:string = readlineSync.question("Choose an option: ");
         if(userInput==="1"){
             console.log("The accounts are:");
-            const balanceOfAccounts: Record<string,number>=transactionRepository.getBalanceForAllUser()
-            for( const [name,balance] of Object.entries(balanceOfAccounts)){
-                console.log(`The account of ${name} with a balance of ${balance.toFixed(2)}`);
+            const balanceOfAccounts: Map<string,number>=transactionRepository.getBalanceForAllUser(accountRepository.getAllAccounts())
+            for (const [name, balance] of balanceOfAccounts)
+            {
+                console.log(`Account of ${name} with balance of ${balance.toFixed(2)}`);
             }
             console.log("");
         }

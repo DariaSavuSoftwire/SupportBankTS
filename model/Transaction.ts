@@ -1,4 +1,3 @@
-import Account from './Account.js';
 class Transaction {
     private date: Date;
     private transferredFrom: string;

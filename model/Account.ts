@@ -1,18 +1,18 @@
 class Account {
-    private owner:string;
-    private balance:number;
+    private owner: string;
+    private balance: number;
 
-    constructor(owner:string, balance:number) {
+    constructor(owner: string, balance: number) {
         this.owner = owner;
         this.balance = balance;
     }
-    getOwner():string {
+    getOwner(): string {
         return this.owner;
     }
-    getBalance():number{
+    getBalance(): number{
         return this.balance;
     }
-    changeBalance(amount:number):void{
+    changeBalance(amount: number): void{
         this.balance+= amount;
     }
     toString():string

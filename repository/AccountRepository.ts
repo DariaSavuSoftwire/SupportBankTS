@@ -1,22 +1,12 @@
-import  Account from "../model/Account.js";
-
 class AccountRepository {
-    private accountList: Array<Account>;
+    private accountList: Set<string>;
     constructor() {
-        this.accountList = [];
+        this.accountList = new Set<string>();
     }
-
-    findAccount(owner: string):Account {
-        const existingAccount:Account|undefined=this.accountList.find(acc=>acc.getOwner()===owner);
-        if(existingAccount) {
-            return existingAccount;
-        }
-
-        const newAccount:Account = new Account(owner,0);
-        this.accountList.push(newAccount);
-        return newAccount;
+    addAccount(owner: string): void {
+        this.accountList.add(owner);
     }
-    getAllAccounts():Array<Account> {
+    getAllAccounts():Set<string> {
         return this.accountList;
     }
 }

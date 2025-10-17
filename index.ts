@@ -17,14 +17,11 @@ function setUp(){
     rows.shift();
 
     for(let row of rows){
-        const [date,from,to,description,amount]=row.split(',');
-        const transactionDate:Date=parse(date??"","dd/MM/yyyy",new Date());
-        const fromAccount:Account=accountRepository.findAccount(from??"")
-        const toAccount:Account=accountRepository.findAccount(to??"")
-
-        fromAccount.changeBalance(-Number(amount))
-        toAccount.changeBalance(Number(amount))
-        transactionRepository.addTransaction(new Transaction(transactionDate,fromAccount,toAccount,description?? ""))
+        const [date,fromAccount,toAccount,description,amount]=row.split(',');
+        const transactionDate:Date=parse(date ?? "","dd/MM/yyyy",new Date());
+        accountRepository.addAccount(fromAccount ?? "")
+        accountRepository.addAccount(toAccount ?? "")
+        transactionRepository.addTransaction(new Transaction(transactionDate,fromAccount,toAccount,description?? "",Number(amount)))
 
     }
 }
@@ -41,7 +38,10 @@ function main()
         const userInput:string = readlineSync.question("Choose an option: ");
         if(userInput==="1"){
             console.log("The accounts are:");
-            accountRepository.getAllAccounts().forEach(account=>{console.log(account.toString())})
+            const balanceOfAccounts: Record<string,number>=transactionRepository.getBalanceForAllUser()
+            for( const [name,balance] of Object.entries(balanceOfAccounts)){
+                console.log(`The account of ${name} with a balance of ${balance.toFixed(2)}`);
+            }
             console.log("");
         }
         else if(userInput==="2"){

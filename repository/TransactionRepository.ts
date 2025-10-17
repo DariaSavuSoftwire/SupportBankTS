@@ -1,4 +1,5 @@
 import Transaction from "../model/Transaction.js";
+import transaction from "../model/Transaction.js";
 
 class TransactionRepository {
     private transcationList: Array<Transaction>;
@@ -11,10 +12,19 @@ class TransactionRepository {
     getAllTransactions(): Array<Transaction> {
         return this.transcationList;
     }
-    getTransactionsForUser(owner:string)
+    getTransactionsForUser(owner: string)
     {
         return this.transcationList.filter((transaction:Transaction)=>
-            transaction.getTo().getOwner()===owner || transaction.getFrom().getOwner()===owner);
+            transaction.getTransferredTo()===owner || transaction.getTransferredFrom()===owner);
+    }
+    getBalanceForAllUser()
+    {
+        let accountBalanceForUsers: Record<string,number>;
+        this.transcationList.forEach(transaction => {
+            accountBalanceForUsers[transaction.getTransferredTo()]-=transaction.getAmount();
+            accountBalanceForUsers[transaction.getTransferredTo()]+=transaction.getAmount();
+        })
+        return accountBalanceForUsers;
     }
 }
 export default TransactionRepository;

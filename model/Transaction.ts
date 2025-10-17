@@ -1,26 +1,28 @@
 import Account from './Account.js';
 class Transaction {
     private date: Date;
-    private from:Account;
-    private to:Account;
-    private description:string;
+    private transferredFrom: string;
+    private transferredTo: string;
+    private description: string;
+    private amount: number;
 
-    constructor(date:Date, from:Account,to:Account,description:string) {
+    constructor(date: Date, from: string, to: string, description: string, amount: number) {
         this.date = date;
-        this.from = from;
-        this.to = to;
+        this.transferredFrom = from;
+        this.transferredTo = to;
         this.description = description;
+        this.amount = amount;
     }
-    getFrom():Account
-    {
-        return this.from;
+    getTransferredFrom(): string {
+        return this.transferredFrom;
     }
-    getTo():Account
-    {
-        return this.to;
+    getTransferredTo(): string {
+        return this.transferredTo;
     }
-    toString():string
-    {
+    getAmount(): number {
+        return this.amount;
+    }
+    toString(): string {
         return `Transaction done on ${this.date.toLocaleDateString('en-UK')} with description ${this.description}`;
     }
 }
